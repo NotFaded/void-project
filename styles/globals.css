@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void-black: #000000;
+  --void-surface: #0a0a0a;
+  --void-accent: #8b5cf6;
+  --void-glow: #a78bfa;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #000;
+  color: #c8c8c8;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── Scanline overlay ─────────────────────────────────────── */
+.scanline-overlay::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(139, 92, 246, 0.06);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Noise texture ───────────────────────────────────────── */
+.noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.4;
+}
+
+/* ── Glitch text ─────────────────────────────────────────── */
+.glitch {
+  position: relative;
+  color: #fff;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  color: #8b5cf6;
+  animation: glitch-1 3s infinite linear alternate-reverse;
+  opacity: 0.8;
+}
+
+.glitch::after {
+  color: #ef4444;
+  animation: glitch-2 3s infinite linear alternate-reverse;
+  opacity: 0.6;
+}
+
+@keyframes glitch-1 {
+  0%   { clip-path: inset(40% 0 61% 0); transform: translate(-4px, 0); }
+  20%  { clip-path: inset(92% 0 1% 0);  transform: translate(4px, 0); }
+  40%  { clip-path: inset(43% 0 1% 0);  transform: translate(-2px, 0); }
+  60%  { clip-path: inset(25% 0 58% 0); transform: translate(2px, 0); }
+  80%  { clip-path: inset(54% 0 7% 0);  transform: translate(-4px, 0); }
+  100% { clip-path: inset(58% 0 43% 0); transform: translate(4px, 0); }
+}
+
+@keyframes glitch-2 {
+  0%   { clip-path: inset(25% 0 58% 0); transform: translate(4px, 0); }
+  20%  { clip-path: inset(54% 0 7% 0);  transform: translate(-4px, 0); }
+  40%  { clip-path: inset(58% 0 43% 0); transform: translate(2px, 0); }
+  60%  { clip-path: inset(40% 0 61% 0); transform: translate(-2px, 0); }
+  80%  { clip-path: inset(92% 0 1% 0);  transform: translate(4px, 0); }
+  100% { clip-path: inset(43% 0 1% 0);  transform: translate(-4px, 0); }
+}
+
+@keyframes scanline {
+  0%   { top: -2px; }
+  100% { top: 100vh; }
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.3; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ── Glow effects ────────────────────────────────────────── */
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.1);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px rgba(139, 92, 246, 0.6), 0 0 40px rgba(139, 92, 246, 0.3);
+}
+
+.glow-text-white {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+/* ── Wallet adapter overrides ────────────────────────────── */
+.wallet-adapter-button {
+  background: transparent !important;
+  border: 1px solid #2a2a2a !important;
+  color: #c8c8c8 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 12px !important;
+  letter-spacing: 0.1em !important;
+  padding: 10px 20px !important;
+  transition: all 0.2s ease !important;
+}
+
+.wallet-adapter-button:hover {
+  border-color: #8b5cf6 !important;
+  color: #fff !important;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.2) !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  background: #0a0a0a !important;
+  border: 1px solid #1a1a1a !important;
+}
+
+/* ── Divider ─────────────────────────────────────────────── */
+.void-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #1a1a1a 30%, #1a1a1a 70%, transparent);
+}
+
+/* ── Counter digits ──────────────────────────────────────── */
+.counter-digit {
+  font-variant-numeric: tabular-nums;
+  animation: flicker 6s infinite;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #2a2a2a; }
